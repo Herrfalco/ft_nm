@@ -1,6 +1,9 @@
-NAME	=	a.out
-SRCS	=	main.c \
-		list.c
+NAME	=	ft_nm
+SRCS	=	error.c \
+		list.c \
+		main.c \
+		mem.c \
+		parse.c
 OBJS	=	$(SRCS:.c=.o)
 CC	=	gcc
 CFLAGS	=	-Wall -Wall -Wextra
