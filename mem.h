@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.h                                             :+:      :+:    :+:   */
+/*   mem.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/02 16:58:59 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/03 11:24:57 by fcadet           ###   ########.fr       */
+/*   Created: 2023/01/03 09:49:16 by fcadet            #+#    #+#             */
+/*   Updated: 2023/01/03 11:05:30 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef MEM_H
+#define MEM_H
+
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <elf.h>
-#include "mem.h"
+#include <unistd.h>
 
-#define BASE_SZ		128
-
-typedef struct		list_s {
-	Elf64_Sym		**data;
-	char			*str;
+typedef struct		mem_s {
+	void			*data;
 	uint64_t		sz;
-}					list_t;
+}					mem_t;
 
-int			list_init(list_t *list, mem_t *mem, uint64_t mem_sz, Elf64_Shdr *s_strtab);
-void		list_free(list_t *list);
-int			list_push(list_t *list, Elf64_Sym *sym);
-int			list_sort(list_t *list);
-int			list_print(list_t *list);
+void		*mem_get(mem_t *mem, uint64_t offset, uint64_t idx, uint64_t size);
+
+#endif

@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.h                                             :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/02 16:58:59 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/03 11:24:57 by fcadet           ###   ########.fr       */
+/*   Created: 2023/01/03 10:17:07 by fcadet            #+#    #+#             */
+/*   Updated: 2023/01/03 11:05:46 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
+#ifndef PARSE_H
+#define PARSE_H
+
 #include <elf.h>
+#include <string.h>
 #include "mem.h"
 
-#define BASE_SZ		128
+Elf64_Ehdr			*parse_ehdr(mem_t *mem);
+Elf64_Shdr			*parse_shdr(mem_t *mem, char *name);
 
-typedef struct		list_s {
-	Elf64_Sym		**data;
-	char			*str;
-	uint64_t		sz;
-}					list_t;
-
-int			list_init(list_t *list, mem_t *mem, uint64_t mem_sz, Elf64_Shdr *s_strtab);
-void		list_free(list_t *list);
-int			list_push(list_t *list, Elf64_Sym *sym);
-int			list_sort(list_t *list);
-int			list_print(list_t *list);
+#endif // PARSE_H

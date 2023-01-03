@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.h                                             :+:      :+:    :+:   */
+/*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/02 16:58:59 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/03 11:24:57 by fcadet           ###   ########.fr       */
+/*   Created: 2023/01/03 10:03:08 by fcadet            #+#    #+#             */
+/*   Updated: 2023/01/03 11:17:40 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
-#include <stdlib.h>
+#ifndef ERROR_H
+#define ERROR_H
+
 #include <stdio.h>
-#include <elf.h>
-#include "mem.h"
+#include <unistd.h>
+#include <stdint.h>
+#include <sys/mman.h>
 
-#define BASE_SZ		128
+typedef enum		e_err {
+	E_ARG,
+	E_FOPEN,
+	E_FOPER,
+	E_ALLOC,
+	E_EHDR,
+	E_SHDR,
+	E_SYM,
+}					t_err;
 
-typedef struct		list_s {
-	Elf64_Sym		**data;
-	char			*str;
-	uint64_t		sz;
-}					list_t;
+int				error(t_err err);
+int				error_close(t_err err, int fd);
+int				error_unmap(t_err err, void *mem, uint64_t mem_sz);
 
-int			list_init(list_t *list, mem_t *mem, uint64_t mem_sz, Elf64_Shdr *s_strtab);
-void		list_free(list_t *list);
-int			list_push(list_t *list, Elf64_Sym *sym);
-int			list_sort(list_t *list);
-int			list_print(list_t *list);
+#endif // ERROR_H

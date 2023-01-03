@@ -6,46 +6,37 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:23:12 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/03 09:18:40 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/03 12:05:23 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 
-void		*get_mem(void *mem, uint64_t mem_sz, uint64_t offset, uint64_t idx, uint64_t size);
-
-int			list_init(list_t *list, void *mem, uint64_t mem_sz, Elf64_Shdr *s_strtab) {
-	list->str_sz = s_strtab->sh_size;
-	if (!(list->str = get_mem(mem, mem_sz,
-			s_strtab->sh_offset, 0, s_strtab->sh_size))
-			|| list->str[list->str_sz - 1])
+int			list_init(list_t *list, mem_t *mem, Elf64_Shdr *s_strtab, Elf64_Shdr *s_symtab) {
+	uint64_t		i, sym_nb;
+	Elf64_Sym		*sym;
+	char			*strs;
+		
+	if (!(strs = mem_get(mem, s_strtab->sh_offset,
+			0, s_strtab->sh_size))
+			|| strs[s_strtab->sh_size - 1])
 		return (-1);
-	list->sz = 0;
-	list->cap = BASE_SZ;
-	if (!(list->data = malloc(list->cap * sizeof(Elf64_Sym *))))
+	if (!s_symtab->sh_entsize)
 		return (-1);
+	sym_nb = s_symtab->sh_size / s_symtab->sh_entsize;
+	// allocation
+	for (i = 0; i < sym_nb; ++i) {
+		if (!(sym = mem_get(mem, s_symtab->sh_offset,
+				i, s_symtab->sh_entsize))
+				|| sym->st_name > s_strtab->sh_size - 1)
+			return (-1);
+		// initialization
+	}
 	return (0);
 }
 
 void		list_free(list_t *list) {
 	free(list->data);
-}
-
-int			list_push(list_t *list, Elf64_Sym *sym) {
-	Elf64_Sym		**new;
-	uint64_t		i;
-
-	if (list->sz == list->cap) {
-		list->cap *= 2;
-		if (!(new = malloc(list->cap * sizeof(Elf64_Sym *))))
-			return (-1);
-		for (i = 0; i < list->sz; ++i)
-			new[i] = list->data[i];
-		free(list->data);
-		list->data = new;
-	}
-	list->data[list->sz++] = sym;
-	return (0);
 }
 
 int			list_sort(list_t *list) {
@@ -88,6 +79,8 @@ int			list_print(list_t *list) {
 			printf("                ");
 		else
 			hex_print(list->data[i]->st_value, 64);
+		if (list->data[i]->st_info == STT_NOTYPE)
+			printf(" U");
 		printf(" %s\n", list->str + list->data[i]->st_name);
 	}
 	return (0);
