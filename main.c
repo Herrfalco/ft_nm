@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 15:21:00 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/02 17:53:01 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/03 08:49:23 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int			error(t_err err) {
 	return (err + 1);
 }
 
-static void		*get_mem(void *mem, uint64_t mem_sz, uint64_t offset, uint64_t idx, uint64_t size) {
+void		*get_mem(void *mem, uint64_t mem_sz, uint64_t offset, uint64_t idx, uint64_t size) {
 	if (!size || offset + (idx + 1) * size > mem_sz)
 		return (NULL);
 	return (mem + offset + idx * size);
@@ -89,13 +89,9 @@ int			disp_symtab(void *mem, struct stat *statbuf, Elf64_Shdr *s_strtab, Elf64_S
 	uint64_t			idx, size;
 	Elf64_Sym			*sym;
 	list_t				list;
-	char				*sym_str;
-
 
 	if (!s_symtab->sh_entsize
-			|| !(sym_str = get_mem(mem, statbuf->st_size,
-				s_strtab->sh_offset, 0, s_strtab->sh_size))
-			|| list_init(&list))
+			|| list_init(&list, mem, statbuf->st_size, s_strtab))
 		return (-1);
 	size = s_symtab->sh_size / s_symtab->sh_entsize;
 	for (idx = 0; idx < size; ++idx) {
@@ -105,14 +101,8 @@ int			disp_symtab(void *mem, struct stat *statbuf, Elf64_Shdr *s_strtab, Elf64_S
 			list_free(&list);
 			return (-1);
 		}
-		if (sym->st_name && sym->st_info != STT_FILE) {
-			if (sym->st_name > s_strtab->sh_size
-					|| sym_str[s_strtab->sh_size - 1]) {
-				list_free(&list);
-				return (-1);
-			}
-			list_push(&list, sym_str + sym->st_name);
-		}
+		if (sym->st_name && sym->st_info != STT_FILE)
+			list_push(&list, sym);
 	}
 	list_sort(&list);
 	list_print(&list);
