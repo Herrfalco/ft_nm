@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:17:07 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/03 11:05:46 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/03 17:58:32 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@
 #include "mem.h"
 
 Elf64_Ehdr			*parse_ehdr(mem_t *mem);
-Elf64_Shdr			*parse_shdr(mem_t *mem, char *name);
+Elf64_Shdr			*parse_shdr(mem_t *mem, const char *name);
 
 #endif // PARSE_H

@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:15:34 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/03 11:47:09 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/03 17:58:23 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ Elf64_Ehdr			*parse_ehdr(mem_t *mem) {
 		? NULL : e_hdr);
 }
 
-Elf64_Shdr			*parse_shdr(mem_t *mem, char *name) {
+Elf64_Shdr			*parse_shdr(mem_t *mem, const char *name) {
 	uint64_t			i, idx;
 	Elf64_Ehdr			*e_hdr;
 	Elf64_Shdr			*s_hdr;

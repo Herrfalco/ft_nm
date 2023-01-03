@@ -11,7 +11,8 @@ CFLAGS	=	-Wall -Wall -Wextra
 all	:	$(NAME)
 
 $(NAME)	:	$(OBJS)
-		$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+		$(CC) $(CFLAGS) -no-pie $^ -o $@ $(LIBS)
+#		$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
 %.o	:	%.c
 		$(CC) $(CFLAGS) -c $< -o $@

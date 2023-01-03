@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:23:12 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/03 17:02:38 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/03 18:25:02 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,18 @@ int			list_print(list_t *list) {
 	uint64_t		i;
 
 	for (i = 0; i < list->sz; ++i) {
-		if (list->syms[i]->st_info == STT_FILE)
+		if (ELF64_ST_TYPE(list->syms[i]->st_info)
+					== STT_FILE)
 			continue;
+		printf("%02d %02d ",
+				ELF64_ST_TYPE(list->syms[i]->st_info),
+				ELF64_ST_BIND(list->syms[i]->st_info));
 		if (!list->syms[i]->st_value)
 			printf("                ");
 		else
 			hex_print(list->syms[i]->st_value, 64);
+		if (ELF64_ST_BIND(list->syms[i]->st_info) == STB_WEAK)
+			printf(list->syms[i]->st_value ? " W" : " w");
 		printf(" %s\n", list->strs + list->syms[i]->st_name);
 	}
 	return (0);
