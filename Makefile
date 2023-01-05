@@ -11,11 +11,13 @@ CFLAGS	=	-Wall -Wall -Wextra
 all	:	$(NAME)
 
 $(NAME)	:	$(OBJS)
-		$(CC) $(CFLAGS) -no-pie $^ -o $@ $(LIBS)
-#		$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+#		$(CC) $(CFLAGS) -no-pie $^ -o $@ $(LIBS)
+#		$(CC) $(CFLAGS) -g $^ -o $@ $(LIBS)
+		$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
 %.o	:	%.c
 		$(CC) $(CFLAGS) -c $< -o $@
+#		$(CC) $(CFLAGS) -g -c $< -o $@
 
 clean	:
 		$(RM) $(OBJS)

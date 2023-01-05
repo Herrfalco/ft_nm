@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:15:34 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/03 17:58:23 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/04 16:33:55 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,38 +23,71 @@ Elf64_Ehdr			*parse_ehdr(mem_t *mem) {
 		? NULL : e_hdr);
 }
 
-Elf64_Shdr			*parse_shdr(mem_t *mem, const char *name) {
-	uint64_t			i, idx;
+static int		parse_strs(mem_t *mem, char **strs, uint64_t *strs_sz) {
+	uint64_t			i;
+	Elf64_Ehdr			*e_hdr;
+	Elf64_Shdr			*s_hdr;
+	static char			*stat_strs = NULL;
+	static uint64_t		stat_strs_sz = 0;
+
+	if (!stat_strs) {
+		if (!(e_hdr = parse_ehdr(mem))
+				|| (i = e_hdr->e_shstrndx) == SHN_UNDEF)
+			return (-1);
+		else if (i == SHN_XINDEX) {
+			if (!(s_hdr = mem_get(mem, e_hdr->e_shoff,
+					0, e_hdr->e_shentsize)))
+				return (-1);
+			i = s_hdr->sh_link;
+		}
+		if (!(s_hdr = mem_get(mem, e_hdr->e_shoff,
+				i, e_hdr->e_shentsize)))
+			return (-1);
+		if (!(stat_strs = mem_get(mem, s_hdr->sh_offset,
+				0, s_hdr->sh_size))
+			|| stat_strs[s_hdr->sh_size - 1])
+			return (-1);
+		stat_strs_sz = s_hdr->sh_size;
+	}
+	*strs = stat_strs;
+	*strs_sz = stat_strs_sz;
+	return (0);
+}
+
+char				*parse_sname(mem_t *mem, uint64_t idx) {
+	uint64_t			strs_sz;
 	Elf64_Ehdr			*e_hdr;
 	Elf64_Shdr			*s_hdr;
 	char				*strs;
 
-	if (!(e_hdr = parse_ehdr(mem))
-			|| (idx = e_hdr->e_shstrndx) == SHN_UNDEF)
+	if (parse_strs(mem, &strs, &strs_sz)
+		|| !(e_hdr = parse_ehdr(mem))
+		|| !(s_hdr = mem_get(mem, e_hdr->e_shoff, idx,
+			e_hdr->e_shentsize))
+		|| s_hdr->sh_name > strs_sz - 1)
 		return (NULL);
-	else if (idx == SHN_XINDEX) {
-		if (!(s_hdr = mem_get(mem, e_hdr->e_shoff,
-				0, e_hdr->e_shentsize)))
-			return (NULL);
-		idx = s_hdr->sh_link;
-	}
-	if (!(s_hdr = mem_get(mem, e_hdr->e_shoff,
-			idx, e_hdr->e_shentsize)))
+	return (strs + s_hdr->sh_name);
+}
+
+Elf64_Shdr			*parse_shdr(mem_t *mem, const char *name) {
+	uint64_t			i = 0, j, strs_sz;
+	Elf64_Ehdr			*e_hdr;
+	Elf64_Shdr			*s_hdr;
+	char				*strs;
+
+	if (parse_strs(mem, &strs, &strs_sz)
+		|| !(e_hdr = parse_ehdr(mem)))
 		return (NULL);
-	if (!(strs = mem_get(mem, s_hdr->sh_offset,
-			0, s_hdr->sh_size)))
-		return (NULL);
-	idx = 0;
 	do {
-		for (; idx < s_hdr->sh_size && strs[idx]; ++idx);
-		if (++idx >= s_hdr->sh_size)
+		for (; i < strs_sz && strs[i]; ++i);
+		if (++i > strs_sz - 1)
 			return (NULL);
-	} while (strncmp(strs + idx, name, s_hdr->sh_size - idx));
-	for (i = 0; i < e_hdr->e_shnum; ++i) {
+	} while (strcmp(strs + i, name));
+	for (j = 0; j < e_hdr->e_shnum; ++j) {
 		if (!(s_hdr = mem_get(mem, e_hdr->e_shoff,
-				i, e_hdr->e_shentsize)))
+				j, e_hdr->e_shentsize)))
 			return (NULL);
-		if (s_hdr->sh_name == idx)
+		if (s_hdr->sh_name == i)
 			return (mem_get(mem, s_hdr->sh_offset,
 					0, s_hdr->sh_size) ? s_hdr : NULL);
 	}

@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:03:08 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/03 16:57:05 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/05 16:23:01 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "mem.h"
 
 typedef enum		e_err {
-	E_ARG,
+	E_NO,
 	E_FOPEN,
 	E_FOPER,
 	E_ALLOC,
@@ -28,10 +28,11 @@ typedef enum		e_err {
 	E_SHDR,
 	E_SYM,
 	E_LIST,
+	E_PLIST,
 }					t_err;
 
-int				error(t_err err);
-int				error_close(t_err err, int fd);
-int				error_unmap(t_err err, mem_t *mem);
+int				error(t_err err, char *file);
+int				error_close(t_err err, int fd, char *file);
+int				error_unmap(t_err err, mem_t *mem, char *file);
 
 #endif // ERROR_H
