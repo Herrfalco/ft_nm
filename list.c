@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:23:12 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/05 15:44:18 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/05 20:27:18 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,33 +100,41 @@ int			list_print(list_t *list) {
 
 		// Unsupported:
 		// G/g	Small initialized data
-		// i	Indirect function (GNU extension)
 		// I	Indirect reference to another symbol
 		//
 		// N	Debugging (-a)
 		// n	Read-only section (R/r duplicated ?) (-a)
 		//
-		// p	Stack unwind section
 		// S/s	Small uninitialized data
-		// u	Unique global symbol (GNU extension)
 		// -	Stab symbol in a.out object
 		glob = (ELF64_ST_BIND(list->syms[i]->st_info)
 				== STB_GLOBAL);
-		if (ELF64_ST_BIND(list->syms[i]->st_info) == STB_WEAK)
-			if (ELF64_ST_TYPE(list->syms[i]->st_info) == STT_OBJECT)
+		if (ELF64_ST_BIND(list->syms[i]->st_info)
+				== STB_GNU_UNIQUE)
+			printf(" u");
+		else if (ELF64_ST_TYPE(list->syms[i]->st_info)
+				== STT_GNU_IFUNC)
+			printf(" i");
+		else if (ELF64_ST_TYPE(list->syms[i]->st_info)
+				== SHT_IA_64_UNWIND)
+			printf(" p");
+		else if (ELF64_ST_BIND(list->syms[i]->st_info)
+				== STB_WEAK) {
+			if (ELF64_ST_TYPE(list->syms[i]->st_info)
+					== STT_OBJECT)
 				printf(list->syms[i]->st_value ? " V" : " v");
 			else
 				printf(list->syms[i]->st_value ? " W" : " w");
-		else if (list->syms[i]->st_shndx >= SHN_LORESERVE) {
+		} else if (list->syms[i]->st_shndx >= SHN_LORESERVE) {
 			switch (list->syms[i]->st_shndx) {
 				case SHN_UNDEF:
-					printf(glob ? " U" : " u");
+					printf(" U");
 					break;
 				case SHN_ABS:
-					printf(glob ? " A" : " a");
+					printf(" A");
 					break;
 				case SHN_COMMON:
-					printf(glob ? " C" : " c");
+					printf(" C");
 					break;
 				default:
 					printf(" ?");
@@ -134,12 +142,14 @@ int			list_print(list_t *list) {
 		} else if ((sec_name = parse_sname(list->mem,
 					list->syms[i]->st_shndx))) {
 			if (!strlen(sec_name))
-				printf(glob ? " U" : " u");
+				printf(" U");
 			else if (!strcmp(sec_name, ".text")
+					|| !strcmp(sec_name, ".plt")
 					|| !strcmp(sec_name, ".init")
 					|| !strcmp(sec_name, ".fini"))
 				printf(glob ? " T" : " t");
-			else if (!strcmp(sec_name, ".bss"))
+			else if (!strcmp(sec_name, ".bss")
+					|| !strcmp(sec_name, ".tbss"))
 				printf(glob ? " B" : " b");
 			else if (!strncmp(sec_name, ".data", 5)
 					|| !strcmp(sec_name, ".ctors")
@@ -150,11 +160,19 @@ int			list_print(list_t *list) {
 				printf(glob ? " D" : " d");
 			else if (!strncmp(sec_name, ".rodata", 7)
 					|| !strncmp(sec_name, ".note", 5)
+					|| !strcmp(sec_name, ".gcc_except_table")
+					|| !strcmp(sec_name, ".interp")
+					|| !strcmp(sec_name, ".dynsym")
+					|| !strcmp(sec_name, ".dynstr")
+					|| !strcmp(sec_name, ".gnu")
+					|| !strcmp(sec_name, ".rela")
 					|| !strcmp(sec_name, ".eh_frame")
 					|| !strcmp(sec_name, ".eh_frame_hdr"))
 				printf(glob ? " R" : " r");
+			else if (!strcmp(sec_name, ".comment"))
+				printf(glob ? " N" : " n");
 			else {
-				printf(" %s\n", sec_name);
+				printf(" %s ", sec_name);
 //				return (-1);
 			}
 		} else

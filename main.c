@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 15:21:00 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/05 16:25:14 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/05 16:48:26 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static int			treat_file(char *file, uint8_t multi) {
 			MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 		return (error_close(E_ALLOC, fd, file));
 	close(fd);
+	parse_init();
 	if (!parse_ehdr(&mem))
 		return (error_unmap(E_EHDR, &mem, file));
 	if (!(s_strtab = parse_shdr(&mem, ".strtab"))
@@ -58,9 +59,9 @@ static int			treat_file(char *file, uint8_t multi) {
 int			main(int argc, char **argv) {
 	int		i, ret = 0;
 
-	if (argc < 2)
+	if (argc == 1)
 		return (treat_file("a.out", 0));
 	for (i = 1; i < argc; ++i)
-		ret |= treat_file(argv[i], 1);
+		ret |= treat_file(argv[i], argc > 2);
 	return (ret);
 }

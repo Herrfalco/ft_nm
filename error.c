@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:03:47 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/05 16:23:51 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/05 16:34:20 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int				error(t_err err, char *file) {
 	const char		*strs[] = {
 		"No error",
 		"Can't open file",
-		"File operation failed",
-		"Can't allocate memory",
+		"Can't access file",
+		"Unsupported file",
 		"Can't parse program header",
 		"Can't parse desired section",
 		"No symbol found",
