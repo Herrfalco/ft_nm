@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:15:34 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/06 17:09:59 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/06 18:57:26 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static sec_dat_t		sec_dat = { 0 };
 
+// Need further check (endianness...)
 static err_t			get_ehdr(Elf64_Ehdr **e_hdr) {
 	const char				ident[] = { 0x7f, 'E', 'L', 'F',
 		ELFCLASS64 };

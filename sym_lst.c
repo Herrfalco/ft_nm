@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:23:12 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/06 18:40:18 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/06 19:14:45 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,9 @@ err_t		sym_lst_sort(void) {
 	return (E_NO);
 }
 
-static void	hex_print(uint64_t val, uint8_t size, uint8_t init) {
-	if (init && !val) {
-		printf("%*s", size / 4, "");
-		return;
-	}
+static void	hex_print(uint64_t val, uint8_t size) {
 	if ((size - 4) / 4)
-		hex_print(val / 16, size - 4, 0);
+		hex_print(val / 16, size - 4);
 	printf("%c", (char)(val % 16
 		+ (val % 16 < 10 ? '0' : 'a' - 10)));
 }
@@ -88,7 +84,10 @@ err_t		sym_lst_print(void) {
 			if (!(type = sym_type_from_sec(sym, &err)))
 				if (err)
 					return (err);
-		hex_print(sym->st_value, 64, 1);
+		if (type == T_UD || type == T_WK_UD)
+			printf("%*s", 16, "");
+		else
+			hex_print(sym->st_value, 64);
 		printf(" %c %s\n", ELF64_ST_BIND(sym->st_info)
 				== STB_GLOBAL ? type_glob[type]
 				: type_loc[type], sym_name(sym));
