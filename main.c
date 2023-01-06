@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 15:21:00 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/05 16:48:26 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/06 18:15:58 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,16 @@
 #include <stdio.h>
 #include <sys/mman.h>
 #include <string.h>
-#include "list.h"
+#include "sym_lst.h"
 #include "mem.h"
 #include "error.h"
-#include "parse.h"
+#include "sec.h"
 
 static int			treat_file(char *file, uint8_t multi) {
 	int					fd = open(file, O_RDONLY);
 	mem_t				mem;
 	struct stat			statbuf;
-	Elf64_Shdr			*s_strtab, *s_symtab;
-	list_t				list;
+	err_t				err;
 
 	if (fd < 0)
 		return (error(E_FOPEN, file));
@@ -38,20 +37,15 @@ static int			treat_file(char *file, uint8_t multi) {
 			MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 		return (error_close(E_ALLOC, fd, file));
 	close(fd);
-	parse_init();
-	if (!parse_ehdr(&mem))
-		return (error_unmap(E_EHDR, &mem, file));
-	if (!(s_strtab = parse_shdr(&mem, ".strtab"))
-		|| !(s_symtab = parse_shdr(&mem, ".symtab")))
-		return (error_unmap(E_SYM, &mem, file));
-	if (list_init(&list, &mem, s_strtab, s_symtab))
-		return (error_unmap(E_LIST, &mem, file));
-	list_sort(&list);
+	if ((err = sym_lst_init(&mem))
+		|| (err = sym_lst_sort()))
+		return (error_unmap(err, &mem, file));
 	if (multi)
 		printf("\n%s:\n", file);
-	if (list_print(&list))
-		return (error_unmap(E_PLIST, &mem, file));
-	list_free(&list);
+
+	if ((err = sym_lst_print()))
+		return (error_unmap(err, &mem, file));
+	sym_lst_free();
 	munmap(mem.data, statbuf.st_size);
 	return (E_NO);
 }

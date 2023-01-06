@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.h                                            :+:      :+:    :+:   */
+/*   sec.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:17:07 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/05 20:19:23 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/06 15:51:16 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_H
-#define PARSE_H
+#ifndef SEC_H
+#define SEC_H
 
 #include <elf.h>
 #include <string.h>
 #include "mem.h"
+#include "error.h"
 
-typedef struct		parse_dat_s {
-	Elf64_Ehdr		*e_hdr;
-	char			*strs;
-	uint64_t		strs_sz;
-}					parse_dat_t;
+typedef struct		sec_dat_s {
+	mem_t			*mem;
+	uint64_t		offset;
+	uint64_t		ent_sz;
+	uint64_t		ent_nb;
+	char			*names;
+	uint64_t		names_sz;
+}					sec_dat_t;
 
-void				parse_init(void);
-Elf64_Ehdr			*parse_ehdr(mem_t *mem);
-char				*parse_sname(mem_t *mem, uint64_t idx);
-Elf64_Shdr			*parse_shdr(mem_t *mem, const char *name);
+err_t				sec_init(mem_t *mem);
+Elf64_Shdr			*sec_from_idx(uint64_t idx);
+char				*sec_name(Elf64_Shdr *s_hdr);
+Elf64_Shdr			*sec_from_name(const char *name);
 
-#endif // PARSE_H
+#endif // SEC_H
