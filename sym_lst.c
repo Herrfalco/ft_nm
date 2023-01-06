@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:23:12 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/06 18:22:28 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/06 18:40:18 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static sym_lst_t	sym_lst = { 0 };
 
-static const char	type_loc[] = 	"?abCdgIiNnprstUuVvWw";
-static const char	type_glob[] =	"?ABCDGIiNnpRSTUuVvWw";
+static const char	type_loc[] = 	"?abCdgiNprstUuVvWw";
+static const char	type_glob[] =	"?ABCDGiNpRSTUuVvWw";
 
 void		sym_lst_free(void) {
 	free(sym_lst.ents);
