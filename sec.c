@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:15:34 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/06 18:57:26 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/07 01:11:09 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,43 +89,3 @@ Elf64_Shdr			*sec_from_name(const char *name) {
 	}
 	return (NULL);
 }
-
-/*
-char				*sec_type_from_idx(uint64_t idx) {
-		} else if ((sec_name = parse_sec_name_from_idx(
-					list->syms[i]->st_shndx))) {
-			if (!strlen(sec_name))
-				printf(" U");
-			else if (!strcmp(sec_name, ".text")
-					|| !strcmp(sec_name, ".plt")
-					|| !strcmp(sec_name, ".init")
-					|| !strcmp(sec_name, ".fini"))
-				printf(glob ? " T" : " t");
-			else if (!strcmp(sec_name, ".bss")
-					|| !strcmp(sec_name, ".tbss"))
-				printf(glob ? " B" : " b");
-			else if (!strncmp(sec_name, ".data", 5)
-					|| !strcmp(sec_name, ".ctors")
-					|| !strcmp(sec_name, ".dynamic")
-					|| !strncmp(sec_name, ".got", 4)
-					|| !strcmp(sec_name, ".init_array")
-					|| !strcmp(sec_name, ".fini_array"))
-				printf(glob ? " D" : " d");
-			else if (!strncmp(sec_name, ".rodata", 7)
-					|| !strncmp(sec_name, ".note", 5)
-					|| !strcmp(sec_name, ".gcc_except_table")
-					|| !strcmp(sec_name, ".interp")
-					|| !strcmp(sec_name, ".dynsym")
-					|| !strcmp(sec_name, ".dynstr")
-					|| !strcmp(sec_name, ".gnu")
-					|| !strcmp(sec_name, ".rela")
-					|| !strncmp(sec_name, ".eh_frame", 8))
-				printf(glob ? " R" : " r");
-			else if (!strcmp(sec_name, ".comment"))
-				printf(glob ? " N" : " n");
-			else {
-				printf(" %s ", sec_name);
-//				return (-1);
-			}
-}
-*/
