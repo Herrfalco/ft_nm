@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 15:21:00 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 15:36:14 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 19:19:48 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,12 @@ static err_t			treat_file(char *file, uint8_t multi) {
 	if ((err = sym_lst_init(&mem))
 		|| (err = sym_lst_sort()))
 		return (error_unmap(err, &mem, file));
-	if (multi)
-		printf("\n%s:\n", file);
+	if (multi) {
+		print_char(STDOUT, '\n');
+		print(STDOUT, file);
+		print(STDOUT, ":\n");
+		print_flush(STDOUT);
+	}
 	if ((err = sym_lst_print()))
 		return (error_unmap(err, &mem, file));
 	sym_lst_free();

@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 11:47:02 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 16:00:46 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 18:44:54 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,12 @@ int				sym_filt(void *sym, err_t *err) {
 	if ((*err = !(name = sym_name(sym)) ? E_OOB : E_NO))
 		return (-1);
 	return ((type == STT_FILE || type == STT_SECTION
-		|| !strlen(name)
-		|| !strcmp(name, "$d")
-		|| !strcmp(name, "$f")
-		|| !strcmp(name, "$m")
-		|| !strcmp(name, "$p")
-		|| !strcmp(name, "$x")) ? 1 : 0);
+		|| !str_len(name)
+		|| !str_cmp(name, "$d")
+		|| !str_cmp(name, "$f")
+		|| !str_cmp(name, "$m")
+		|| !str_cmp(name, "$p")
+		|| !str_cmp(name, "$x")) ? 1 : 0);
 }
 
 sym_type_t		sym_type(void *sym) {

@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 11:47:54 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/08 17:38:43 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 19:29:27 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define SYM_H
 
 #include <elf.h>
-#include <string.h>
 #include "sec.h"
 #include "mem.h"
 

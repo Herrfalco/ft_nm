@@ -6,16 +6,13 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:23:12 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 15:42:32 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 19:21:35 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/sym_lst.h"
 
 static sym_lst_t	sym_lst = { 0 };
-
-static const char	type_loc[] = 	"?abCdgiNprstUuVvWw";
-static const char	type_glob[] =	"?ABCDGiNpRSTUuVvWw";
 
 void		sym_lst_free(void) {
 	free(sym_lst.ents);
@@ -66,11 +63,13 @@ err_t		sym_lst_sort(void) {
 static void	hex_print(uint64_t val, uint8_t size) {
 	if ((size - 4) / 4)
 		hex_print(val / 16, size - 4);
-	printf("%c", (char)(val % 16
-		+ (val % 16 < 10 ? '0' : 'a' - 10)));
+	print_char(STDOUT, val % 16
+		+ (val % 16 < 10 ? '0' : 'a' - 10));
 }
 
 err_t		sym_lst_print(void) {
+	char	type_loc[] = 	"?abCdgiNprstUuVvWw";
+	char	type_glob[] =	"?ABCDGiNpRSTUuVvWw";
 	uint64_t		i;
 	uint8_t			info;
 	void			*sym;
@@ -89,16 +88,21 @@ err_t		sym_lst_print(void) {
 				if (err)
 					return (err);
 		if (type == T_UD || type == T_WK_UD)
-			printf("%*s", arch_is_64() ? 16 : 8, "");
+			print_n_char(STDOUT, ' ', arch_is_64() ? 16 : 8);
 		else if (opts_get(O_U))
 			continue;
 		else
 			hex_print(arch_sym(sym, SMF_VALUE), 
 				arch_is_64() ? 64 : 32);
 		info = arch_sym(sym, SMF_INFO);
-		printf(" %c %s\n", arch_macro(&info, M_ST_BIND)
+		print_char(STDOUT, ' ');
+		print_char(STDOUT, arch_macro(&info, M_ST_BIND)
 				== STB_GLOBAL ? type_glob[type]
-				: type_loc[type], sym_name(sym));
+				: type_loc[type]);
+		print_char(STDOUT, ' ');
+		print(STDOUT, sym_name(sym));
+		print_char(STDOUT, '\n');
+		print_flush(STDOUT);
 	}
 	return (0);
 }

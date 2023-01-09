@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:15:34 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 13:32:00 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 18:44:24 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static err_t			get_ehdr(void **e_hdr) {
 	char					*e_ident;
 
 	if (!(e_ident = mem_get(sec_dat.mem, 0, 0, 5))
-		|| strncmp(ident, e_ident, 4)
+		|| str_n_cmp(ident, e_ident, 4)
 		|| arch_set(e_ident[4]))
 		return (E_EHDR);
 	return ((!(*e_hdr = mem_get(sec_dat.mem, 0, 0, arch_is_64()
@@ -88,7 +88,7 @@ void				*sec_from_name(const char *name) {
 			return (NULL);
 		if (!(s_name = sec_name(s_hdr)))
 			return (NULL);
-		if (!strcmp(s_name, name))
+		if (!str_cmp(s_name, name))
 			return (s_hdr);
 	}
 	return (NULL);

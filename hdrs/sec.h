@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:17:07 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 11:58:13 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 19:29:16 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define SEC_H
 
 #include <elf.h>
-#include <string.h>
 #include "mem.h"
 #include "error.h"
 #include "arch.h"

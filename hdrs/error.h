@@ -6,18 +6,18 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:03:08 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 14:07:24 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 19:28:54 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ERROR_H
 #define ERROR_H
 
-#include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
 #include <sys/mman.h>
 #include "mem.h"
+#include "utils.h"
 
 typedef enum		err_e {
 	E_NO,

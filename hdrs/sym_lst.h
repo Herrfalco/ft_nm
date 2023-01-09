@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:58:59 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 14:45:52 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 19:29:34 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <elf.h>
 #include "sym.h"
 #include "mem.h"

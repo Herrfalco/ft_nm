@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:03:47 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 14:23:56 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 19:18:41 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,12 @@ err_t			error(err_t err, char *file) {
 		"Can't callocate memory",
 	};
 
-	fprintf(stderr, "Error: \"%s\": %s\n", file, strs[err]);
+	print(STDERR, "Error: ");
+	print(STDERR, file);
+	print(STDERR, ": ");
+	print(STDERR, strs[err]);
+	print_char(STDERR, '\n');
+	print_flush(STDERR);
 	return (err);
 }
 
