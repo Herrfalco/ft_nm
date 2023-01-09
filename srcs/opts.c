@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:41:07 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 14:40:41 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 16:20:54 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@ err_t		opts_init(int argc, char **argv, int *i) {
 			return (0);
 		for (j = 1; argv[*i][j]; ++j) {
 			switch (argv[*i][j]) {
-				case 'a':
-					if (g_opts.a)
-						return (E_DUP);
-					g_opts.a = 1;
-					break;
-				case 'g':
-					if (g_opts.g)
-						return (E_DUP);
-					g_opts.g = 1;
-					break;
 				case 'u':
 					if (g_opts.u)
 						return (E_DUP);
@@ -57,10 +47,6 @@ err_t		opts_init(int argc, char **argv, int *i) {
 
 int			opts_get(opt_t op) {
 	switch (op) {
-		case O_A:
-			return (g_opts.a);
-		case O_G:
-			return (g_opts.g);
 		case O_U:
 			return (g_opts.u);
 		case O_R:
