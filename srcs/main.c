@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 15:21:00 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 14:43:35 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 15:04:49 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ static err_t			treat_file(char *file, uint8_t multi) {
 }
 
 int			main(int argc, char **argv) {
-	int		i, ret = 0;
+	int		i, ret = 0, rem;
 	err_t	err;
 
 	if ((err = opts_init(argc, argv, &i)))
 		return (error(err, argv[i]));
-	if (argc == 1)
+	if ((rem = argc - i) < 2)
 		return (treat_file("a.out", 0));
-	for (i = 1; i < argc; ++i)
-		ret |= treat_file(argv[i], argc > 2);
+	for (; i < argc; ++i)
+		ret |= treat_file(argv[i], rem > 2);
 	return (ret);
 }

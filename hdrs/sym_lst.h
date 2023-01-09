@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:58:59 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 11:50:31 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 14:45:52 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "mem.h"
 #include "sec.h"
 #include "arch.h"
+#include "opts.h"
 
 typedef struct		sym_lst_s {
 	void			**ents;
