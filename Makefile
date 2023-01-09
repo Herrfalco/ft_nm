@@ -6,7 +6,7 @@
 #    By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/09 16:23:01 by fcadet            #+#    #+#              #
-#    Updated: 2023/01/09 19:22:53 by fcadet           ###   ########.fr        #
+#    Updated: 2023/01/09 19:31:31 by fcadet           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,18 +22,15 @@ SRCS	=	srcs/error.c \
 		srcs/utils.c
 OBJS	=	$(SRCS:.c=.o)
 CC	=	gcc
-CFLAGS	=	-Wall -Wall -Wextra
+CFLAGS	=	-Wall -Wextra -Werror
 
 all	:	$(NAME)
 
 $(NAME)	:	$(OBJS)
-#		$(CC) $(CFLAGS) -no-pie $^ -o $@ $(LIBS)
-#		$(CC) $(CFLAGS) -g $^ -o $@ $(LIBS)
 		$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
 %.o	:	%.c
 		$(CC) $(CFLAGS) -c $< -o $@
-#		$(CC) $(CFLAGS) -g -c $< -o $@
 
 clean	:
 		$(RM) $(OBJS)
