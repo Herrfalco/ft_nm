@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 15:21:00 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 15:04:49 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 15:36:14 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ int			main(int argc, char **argv) {
 
 	if ((err = opts_init(argc, argv, &i)))
 		return (error(err, argv[i]));
-	if ((rem = argc - i) < 2)
+	if (!(rem = argc - i))
 		return (treat_file("a.out", 0));
 	for (; i < argc; ++i)
-		ret |= treat_file(argv[i], rem > 2);
+		ret |= treat_file(argv[i], rem > 1);
 	return (ret);
 }

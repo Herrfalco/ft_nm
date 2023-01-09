@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:23:12 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 14:45:37 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 15:33:17 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ err_t		sym_lst_print(void) {
 					return (err);
 		if (type == T_UD || type == T_WK_UD)
 			printf("%*s", arch_is_64() ? 16 : 8, "");
+		else if (opts_get(O_U))
+			continue;
 		else
 			hex_print(arch_sym(sym, SMF_VALUE), 
 				arch_is_64() ? 64 : 32);
