@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 15:21:00 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 13:31:47 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 14:43:35 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 uint8_t		g_elf_class = 0;
 
-static int			treat_file(char *file, uint8_t multi) {
+static err_t			treat_file(char *file, uint8_t multi) {
 	int					fd = open(file, O_RDONLY);
 	mem_t				mem;
 	struct stat			statbuf;
@@ -43,7 +43,10 @@ static int			treat_file(char *file, uint8_t multi) {
 
 int			main(int argc, char **argv) {
 	int		i, ret = 0;
+	err_t	err;
 
+	if ((err = opts_init(argc, argv, &i)))
+		return (error(err, argv[i]));
 	if (argc == 1)
 		return (treat_file("a.out", 0));
 	for (i = 1; i < argc; ++i)

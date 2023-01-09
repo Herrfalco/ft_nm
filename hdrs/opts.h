@@ -1,42 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   opts.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/03 10:03:08 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 14:07:24 by fcadet           ###   ########.fr       */
+/*   Created: 2023/01/09 13:38:36 by fcadet            #+#    #+#             */
+/*   Updated: 2023/01/09 14:20:18 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_H
-#define ERROR_H
+#ifndef OPTS_H
+#define OPTS_H
 
-#include <stdio.h>
-#include <unistd.h>
 #include <stdint.h>
-#include <sys/mman.h>
-#include "mem.h"
+#include "error.h"
 
-typedef enum		err_e {
-	E_NO,
-	E_OPT,
-	E_DUP,
-	E_FOPEN,
-	E_FOPER,
-	E_MAP,
-	E_EHDR,
-	E_SHDR,
-	E_SYM,
-	E_LIST,
-	E_PLIST,
-	E_OOB,
-	E_ALLOC,
-}					err_t;
+typedef enum		opt_e {
+	O_A,
+	O_G,
+	O_U,
+	O_R,
+	O_P,
+}					opt_t;
 
-err_t			error(err_t err, char *file);
-err_t			error_close(err_t err, int fd, char *file);
-err_t			error_unmap(err_t err, mem_t *mem, char *file);
+typedef struct		opts_s {
+	uint8_t			a : 1;
+	uint8_t			g : 1;
+	uint8_t			u : 1;
+	uint8_t			r : 1;
+	uint8_t			p : 1;
+}					opts_t;
 
-#endif // ERROR_H
+err_t				opts_init(int argc, char **argv, int *i);
+int					opts_get(opt_t op);
+
+#endif // OPTS_H

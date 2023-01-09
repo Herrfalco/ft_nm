@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:03:47 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 13:31:41 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 14:23:56 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 err_t			error(err_t err, char *file) {
 	const char		*strs[] = {
 		"No error",
+		"Unknown option",
+		"Duplicated option",
 		"Can't open file",
 		"Can't access file",
 		"Unsupported file",

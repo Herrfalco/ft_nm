@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:46:34 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 11:58:08 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 14:19:40 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@
 #include "mem.h"
 #include "error.h"
 #include "sec.h"
+#include "opts.h"
 
 #endif // MAIN_H
