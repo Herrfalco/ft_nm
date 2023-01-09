@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:23:12 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 15:33:17 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 15:42:32 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ err_t		sym_lst_sort(void) {
 	char			*s1, *s2;
 	void			*tmp;
 
+	if (opts_get(O_P))
+		return (E_NO);
 	for (sz = sym_lst.ent_nb; sz > 1; --sz) {
 		for (i = 0; i + 1 < sz; ++i) {
 			if (!(s1 = sym_name(sym_lst.ents[i]))
