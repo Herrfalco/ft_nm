@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sec.h                                              :+:      :+:    :+:   */
+/*   sym_lst.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/03 10:17:07 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/06 15:51:16 by fcadet           ###   ########.fr       */
+/*   Created: 2023/01/02 16:58:59 by fcadet            #+#    #+#             */
+/*   Updated: 2023/01/09 11:50:31 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SEC_H
-#define SEC_H
+#ifndef SYM_LST_H
+#define SYM_LST_H
 
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <elf.h>
-#include <string.h>
+#include "sym.h"
 #include "mem.h"
-#include "error.h"
+#include "sec.h"
+#include "arch.h"
 
-typedef struct		sec_dat_s {
-	mem_t			*mem;
-	uint64_t		offset;
-	uint64_t		ent_sz;
+typedef struct		sym_lst_s {
+	void			**ents;
 	uint64_t		ent_nb;
-	char			*names;
-	uint64_t		names_sz;
-}					sec_dat_t;
+}					sym_lst_t;
 
-err_t				sec_init(mem_t *mem);
-Elf64_Shdr			*sec_from_idx(uint64_t idx);
-char				*sec_name(Elf64_Shdr *s_hdr);
-Elf64_Shdr			*sec_from_name(const char *name);
+void		sym_lst_free(void);
+err_t		sym_lst_init(mem_t *mem);
+err_t		sym_lst_sort(void);
+err_t		sym_lst_print(void);
 
-#endif // SEC_H
+#endif // SYM_LST_H

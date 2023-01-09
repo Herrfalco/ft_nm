@@ -6,11 +6,11 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:03:47 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/06 11:34:33 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 13:31:41 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error.h"
+#include "../hdrs/error.h"
 
 err_t			error(err_t err, char *file) {
 	const char		*strs[] = {

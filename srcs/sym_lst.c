@@ -6,11 +6,11 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:23:12 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/06 19:14:45 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/09 13:32:13 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sym_lst.h"
+#include "../hdrs/sym_lst.h"
 
 static sym_lst_t	sym_lst = { 0 };
 
@@ -27,7 +27,8 @@ err_t		sym_lst_init(mem_t *mem) {
 
 	if ((err = sym_init(mem, &sym_lst.ent_nb)))
 		return (err);
-	if (!(sym_lst.ents = malloc(sizeof(Elf64_Sym *)
+	if (!(sym_lst.ents = malloc((arch_is_64()
+			? sizeof(Elf64_Sym *) : sizeof(Elf32_Sym *))
 			* sym_lst.ent_nb)))
 		return (E_ALLOC);
 	for (i = 0; i < sym_lst.ent_nb; ++i) {
@@ -42,7 +43,7 @@ err_t		sym_lst_init(mem_t *mem) {
 err_t		sym_lst_sort(void) {
 	uint64_t		i, j, sz;
 	char			*s1, *s2;
-	Elf64_Sym		*tmp;
+	void			*tmp;
 
 	for (sz = sym_lst.ent_nb; sz > 1; --sz) {
 		for (i = 0; i + 1 < sz; ++i) {
@@ -69,7 +70,8 @@ static void	hex_print(uint64_t val, uint8_t size) {
 
 err_t		sym_lst_print(void) {
 	uint64_t		i;
-	Elf64_Sym		*sym;
+	uint8_t			info;
+	void			*sym;
 	err_t			err;
 	sym_type_t		type;
 
@@ -85,10 +87,12 @@ err_t		sym_lst_print(void) {
 				if (err)
 					return (err);
 		if (type == T_UD || type == T_WK_UD)
-			printf("%*s", 16, "");
+			printf("%*s", arch_is_64() ? 16 : 8, "");
 		else
-			hex_print(sym->st_value, 64);
-		printf(" %c %s\n", ELF64_ST_BIND(sym->st_info)
+			hex_print(arch_sym(sym, SMF_VALUE), 
+				arch_is_64() ? 64 : 32);
+		info = arch_sym(sym, SMF_INFO);
+		printf(" %c %s\n", arch_macro(&info, M_ST_BIND)
 				== STB_GLOBAL ? type_glob[type]
 				: type_loc[type], sym_name(sym));
 	}

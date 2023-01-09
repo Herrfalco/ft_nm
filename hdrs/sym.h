@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 11:47:54 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/06 18:40:32 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/08 17:38:43 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ typedef struct		sym_dat_s {
 }					sym_dat_t;
 
 err_t			sym_init(mem_t *mem, uint64_t *sym_nb);
-Elf64_Sym		*sym_from_idx(uint64_t idx);
-char			*sym_name(Elf64_Sym *sym);
-Elf64_Shdr		*sym_sec(Elf64_Sym *sym);
-int				sym_filt(Elf64_Sym *sym, err_t *err);
-sym_type_t		sym_type(Elf64_Sym *sym);
-sym_type_t		sym_type_from_sec(Elf64_Sym *sym, err_t *err);
+void			*sym_from_idx(uint64_t idx);
+char			*sym_name(void *sym);
+void			*sym_sec(void *sym);
+int				sym_filt(void *sym, err_t *err);
+sym_type_t		sym_type(void *sym);
+sym_type_t		sym_type_from_sec(void *sym, err_t *err);
 
 #endif // SYM_H

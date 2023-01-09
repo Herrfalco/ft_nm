@@ -1,10 +1,11 @@
 NAME	=	ft_nm
-SRCS	=	error.c \
-		sym.c \
-		sym_lst.c \
-		main.c \
-		mem.c \
-		sec.c
+SRCS	=	srcs/error.c \
+		srcs/sym.c \
+		srcs/sym_lst.c \
+		srcs/main.c \
+		srcs/mem.c \
+		srcs/sec.c \
+		srcs/arch.c
 OBJS	=	$(SRCS:.c=.o)
 CC	=	gcc
 CFLAGS	=	-Wall -Wall -Wextra
