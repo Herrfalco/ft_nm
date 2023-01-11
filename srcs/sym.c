@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 11:47:02 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 18:44:54 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/11 08:47:45 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,17 @@ err_t			sym_init(mem_t *mem, uint64_t *sym_nb) {
 		return (E_SYM);
 	sym_dat.offset = arch_shdr(s_symtab, SF_OFFSET);
 	if (!(sym_dat.ent_sz = arch_shdr(s_symtab, SF_ENTSIZE)))
-		return (E_SYM);
+		return (E_SYMSZ);
 	sym_dat.ent_nb = arch_shdr(s_symtab, SF_SIZE)
 		/ sym_dat.ent_sz;
 	*sym_nb = sym_dat.ent_nb;
 	sym_dat.names_sz = arch_shdr(s_strtab, SF_SIZE);
 	if (!(sym_dat.names = mem_get(mem,
 			arch_shdr(s_strtab, SF_OFFSET),
-			0, sym_dat.names_sz))
-		|| sym_dat.names[sym_dat.names_sz - 1])
-		return (E_SYM);
+			0, sym_dat.names_sz)))
+		return (E_OOB);
+	if (sym_dat.names[sym_dat.names_sz - 1])
+		return (E_SYMNT);
 	return (E_NO);
 }
 
@@ -58,7 +59,7 @@ int				sym_filt(void *sym, err_t *err) {
 	char		*name;
 
 	if ((*err = !(name = sym_name(sym)) ? E_OOB : E_NO))
-		return (-1);
+		return (1);
 	return ((type == STT_FILE || type == STT_SECTION
 		|| !str_len(name)
 		|| !str_cmp(name, "$d")

@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:23:12 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 19:21:35 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/11 10:06:36 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 static sym_lst_t	sym_lst = { 0 };
 
 void		sym_lst_free(void) {
-	free(sym_lst.ents);
+	if (sym_lst.ents)
+		free(sym_lst.ents);
+	sym_lst.ents = NULL;
 }
 
 err_t		sym_lst_init(mem_t *mem) {

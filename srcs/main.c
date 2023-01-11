@@ -6,24 +6,24 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 15:21:00 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 19:19:48 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/11 09:40:25 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/main.h"
 
-uint8_t		g_elf_class = 0;
-
 static err_t			treat_file(char *file, uint8_t multi) {
-	int					fd = open(file, O_RDONLY);
+	int					fd;
 	mem_t				mem;
 	struct stat			statbuf;
 	err_t				err;
 
-	if (fd < 0)
+	if ((fd = open(file, O_RDONLY)) < 0)
 		return (error(E_FOPEN, file));
 	if (fstat(fd, &statbuf))
-		return (error_close(E_FOPER, fd, file));
+		return (error_close(E_FINFO, fd, file));
+	if (!S_ISREG(statbuf.st_mode))
+		return (error_close(E_FILE, fd, file));
 	mem.sz = statbuf.st_size;
 	if ((mem.data = mmap(NULL, mem.sz, PROT_READ,
 			MAP_PRIVATE, fd, 0)) == MAP_FAILED)

@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:03:47 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 19:18:41 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/11 09:29:26 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,21 @@ err_t			error(err_t err, char *file) {
 		"Unknown option",
 		"Duplicated option",
 		"Can't open file",
-		"Can't access file",
+		"Not a regular file",
+		"Can't get file informations",
 		"Unsupported file",
-		"Can't parse program header",
-		"Can't parse desired section",
 		"No symbol found",
-		"Can't initialize symbol list",
-		"Can't print symbol list",
 		"Out-of-bounds offset",
-		"Can't callocate memory",
+		"Can't allocate memory",
+		"Unsupported architechture",
+		"Invalid symbol names table",
+		"Invalid section names table",
+		"Invalid symbol table entry size",
 	};
 
-	print(STDERR, "Error: ");
+	print(STDERR, "Error: \"");
 	print(STDERR, file);
-	print(STDERR, ": ");
+	print(STDERR, "\": ");
 	print(STDERR, strs[err]);
 	print_char(STDERR, '\n');
 	print_flush(STDERR);
@@ -43,7 +44,10 @@ err_t			error_close(err_t err, int fd, char *file) {
 	return (error(err, file));
 }
 
+void		sym_lst_free(void);
+
 err_t			error_unmap(err_t err, mem_t *mem, char *file) {
 	munmap(mem->data, mem->sz);
+	sym_lst_free();
 	return (error(err, file));
 }

@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:15:34 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 18:44:24 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/11 10:01:16 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 static sec_dat_t		sec_dat = { 0 };
 
-// Need further check (endianness...)
 static err_t			get_ehdr(void **e_hdr) {
 	const char				ident[] = { 0x7f, 'E', 'L', 'F' };
 	char					*e_ident;
 
 	if (!(e_ident = mem_get(sec_dat.mem, 0, 0, 5))
-		|| str_n_cmp(ident, e_ident, 4)
-		|| arch_set(e_ident[4]))
+		|| str_n_cmp(ident, e_ident, 4))
 		return (E_EHDR);
+	if (arch_set(e_ident[EI_CLASS])
+		|| e_ident[EI_DATA] != ELFDATA2LSB)
+		return (E_ARCH);
 	return ((!(*e_hdr = mem_get(sec_dat.mem, 0, 0, arch_is_64()
 		? sizeof(Elf64_Ehdr) : sizeof(Elf32_Ehdr)))
 		? E_EHDR : E_NO));
@@ -45,9 +46,10 @@ static err_t			get_names(void *e_hdr) {
 		return (E_OOB);
 	if (!(sec_dat.names = mem_get(sec_dat.mem,
 			arch_shdr(s_hdr, SF_OFFSET),
-			0, arch_shdr(s_hdr, SF_SIZE)))
-		|| sec_dat.names[arch_shdr(s_hdr, SF_SIZE) - 1])
+			0, arch_shdr(s_hdr, SF_SIZE))))
 		return (E_OOB);
+	if (sec_dat.names[arch_shdr(s_hdr, SF_SIZE) - 1])
+		return (E_SECNT);
 	sec_dat.names_sz = arch_shdr(s_hdr, SF_SIZE);
 	return (E_NO);
 }

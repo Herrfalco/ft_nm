@@ -8,8 +8,8 @@ make -s re
 echo "Options:"
 for OP in "${OPTS[@]}"; do
 	echo -n "\"${OP}\" -> "
-	./ft_nm "${OP}" ./binary/* >> test1 2> /dev/null
-	nm "${OP}" ./binary/* >> test2 2> /dev/null
+	./ft_nm "${OP}" ./binary/* > test1 2> /dev/null
+	nm "${OP}" ./binary/* > test2 2> /dev/null
 	diff test1 test2 > /dev/null
 	if [ "$?" -eq 0 ]; then
 		echo "OK";
@@ -17,5 +17,15 @@ for OP in "${OPTS[@]}"; do
 		echo "KO";
 	fi
 done
-rm -rf test1 test2
+echo "From a.out:"
+mv ft_nm a.out
+./a.out > test1 2> /dev/null
+nm > test2 2> /dev/null
+diff test1 test2 > /dev/null
+if [ "$?" -eq 0 ]; then
+	echo "OK";
+else
+	echo "KO";
+fi
+rm -rf test1 test2 a.out
 make -s fclean

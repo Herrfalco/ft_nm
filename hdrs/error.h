@@ -6,7 +6,7 @@
 /*   By: fcadet <fcadet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:03:08 by fcadet            #+#    #+#             */
-/*   Updated: 2023/01/09 19:28:54 by fcadet           ###   ########.fr       */
+/*   Updated: 2023/01/11 09:28:33 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,16 @@ typedef enum		err_e {
 	E_OPT,
 	E_DUP,
 	E_FOPEN,
-	E_FOPER,
-	E_MAP,
+	E_FILE,
+	E_FINFO,
 	E_EHDR,
-	E_SHDR,
 	E_SYM,
-	E_LIST,
-	E_PLIST,
 	E_OOB,
 	E_ALLOC,
+	E_ARCH,
+	E_SYMNT,
+	E_SECNT,
+	E_SYMSZ,
 }					err_t;
 
 err_t			error(err_t err, char *file);
