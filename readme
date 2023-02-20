@@ -1,0 +1,2 @@
+unset LANG
+sudo apt-get install gcc-multilib
